@@ -57,4 +57,4 @@ names(meanAndStd) <- gsub("gravity", "Gravity", names(meanAndStd))
 tidyData <- meanAndStd %>%
   group_by(Subject, Activity) %>%
   summarise_all(funs(mean))
-write.table(tidylData, file = "tidyData.txt", row.names = FALSE)
+write.table(tidyData, file = "tidyData.txt", row.names = FALSE)
