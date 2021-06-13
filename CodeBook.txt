@@ -1,0 +1,56 @@
+The run_analysis.R script includes all the steps to collect, work with, and clean the course project data set. It finally prepares a tidy data set that can be used for later analysis.
+
+- Download the dataset
+First download the data in zip format, then unzipped it to obtain the folder called UCI HAR Dataset.
+
+- Read the data into data frames 
+  featureNames <- features.txt (561 rows, 2 columns)
+  activityLabels <- activity_labels.txt (6 rows, 2 columns)
+  # This files have the variable names required for the data.
+  
+  subjectTest <- subject_test.txt (2947 rows, 1 column)
+  activityTest <- y_test.txt (2947 rows, 1 column)
+  featureTest <- X_test.txt (2947 rows, 563 columns)
+  # This files contain the test data
+  
+  subjectTrain <- subject_train.txt (7352 rows, 1 column)
+  activityTrain <- y_train.txt (7352 rows, 1 column)
+  featureTrain <- X_train.txt (7352 rows, 561 columns)
+  # This files contain the train data
+  
+- Merge the training and the test sets to create one data set
+
+  - Merge data according to subject, activity and feature 
+  subjectData <- subjectTest + subjectTrain (10299 rows, 1 column)
+  activityData <- activityTest + activityTrain (10299 rows, 1 column)
+  featureData <- featureTest + featureTrain (10299 rows, 561 columns)
+
+  - Set names to variables
+    subjectData <- "Subject"
+    activityData <- "Activity"
+    featureData <- featureNames$V2
+    # Use the variables on the column 2 of featureNames for the featureData names 
+
+  - Merge all data to create one data set
+    allData <- subjectData + activityData + featureData (10299 rows, 563 columns)
+
+- Extract only the measurements on the mean and standard deviation for each measurement
+  meanAndStd <- allData (10299 rows, 88 columns)
+  # Selecting from the Subject and Activity columns only the rows that contain "mean" and "std" strings
+
+- Use descriptive activity names to name the activities in the data set
+  Use the variables on the column 2 of activityLabels to name the variables on Activity in the meanAndStd set.
+
+- Label the data set with descriptive variable names
+  Replace all the "Acc" in column’s name by Accelerometer
+  Replace all the "Gyro" in column’s name by Gyroscope
+  Replace all the "BodyBody" in column’s name by Body
+  Replace all the "Mag" in column’s name by Magnitude
+  Replace all the start with character "f" in column’s name by Frequency
+  Replace all the start with character "t" in column’s name by Time
+
+- From the data set in step 4, create a second, independent tidy data set with the average of each variable for each activity and each subject
+  
+  - Create the tidyData (180 rows, 88 columns) by grouping by Subject and Activity first and then summarising      all by the mean of each variable for each activity and each subject.
+
+  - Export tidyData into tidyData.txt file.
